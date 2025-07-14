@@ -1,0 +1,6 @@
+@use "src/styles/variables" as *;
+
+.searchbar{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}

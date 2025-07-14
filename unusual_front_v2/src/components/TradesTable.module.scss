@@ -1,0 +1,16 @@
+.table_header{
+  background-color: var(--muted);
+}
+.head_item{
+  display: flex;
+  width: fit-content;
+  gap: .25rem;
+  align-items: center;
+}
+.trigger_cell{
+  background-color: var(--destructive);
+}
+.scrollbar{
+  scrollbar-color:  var(--muted) var(--background);
+  scrollbar-width: thin;
+}

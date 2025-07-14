@@ -1,0 +1,31 @@
+@mixin default-transition {
+  transition: all .5s ease-in-out;
+}
+
+@mixin h1{
+  font-size: 2.488rem;
+}
+@mixin h2{
+  font-size: 1.99rem;
+}
+@mixin h3{
+  font-size: 1.593rem;
+}
+@mixin h4{
+  font-size: 1.237rem;
+}
+@mixin h5{
+  font-size: 1rem;
+}
+@mixin h6{
+  font-size: 0.9rem;
+}
+@mixin text{
+  font-size: 0.9rem;
+}
+@mixin small{
+  font-size: 0.8rem;
+}
+@mixin very-small{
+  font-size: 0.64rem;
+}

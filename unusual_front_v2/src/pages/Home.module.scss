@@ -1,0 +1,44 @@
+@use "src/styles/variables" as * ;
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  gap: 1.5rem;
+}
+.title{
+  grid-column: span 3;
+
+}
+
+.chart{
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+}
+.currencies{
+  grid-column: span 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.default_filters{
+  grid-column: span 3;
+}
+
+.grid_item{
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 2px solid var(--color-border);
+}
+
+.preset_flexbox{
+  display: flex;
+  gap: .5rem;
+  flex-flow: row wrap;
+}
+.preset_badge{
+  @include default-transition;
+  cursor: pointer;
+  border: 2px solid transparent;
+
+}

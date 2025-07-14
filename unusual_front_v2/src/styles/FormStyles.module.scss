@@ -1,0 +1,24 @@
+@use "src/styles/variables" as *;
+
+.container{
+  width: 100%;
+  max-width: 40rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.input_block{
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+
+  &>label{
+    font-weight: bold;
+    @include small;
+  }
+  &>p{
+    @include text;
+    color: var(--muted-foreground);
+  }
+}

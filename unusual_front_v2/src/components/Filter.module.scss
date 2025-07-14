@@ -1,0 +1,26 @@
+@use "src/styles/variables" as *;
+
+.filter_control{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+
+  &>small{
+    color: var(--primary-foreground);
+    background-color: var(--primary);
+    padding: 0 .5rem;
+    border-radius: 4px;
+    width: fit-content;
+  }
+}
+.filter_control_radio{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  &>hr{height: 100%}
+}
+.filter_control_radio_item{
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+}

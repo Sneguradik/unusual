@@ -1,0 +1,27 @@
+@use "src/styles/variables" as *;
+.container{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  width: 100%;
+  padding: 1rem;
+}
+
+.pages{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.page_link{
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  @include default-transition;
+
+  &:hover{
+    color: var(--foreground);
+  }
+}

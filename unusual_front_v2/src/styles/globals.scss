@@ -1,0 +1,38 @@
+@use "src/styles/variables" as *;
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Nunito", sans-serif;
+  margin: 0;
+  font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-weight: bolder;
+}
+
+h1{@include h1}
+h2{@include h2}
+h3{@include h3}
+h4{@include h4}
+h5{@include h5}
+h6{@include h6}
+text,p,span{@include text}
+small{@include small}
+.very-small{@include very-small}
+
+.flex_text, .flex_text{
+  display: flex;
+  gap: .25rem;
+}
+.flex_text.vertical{
+  flex-direction: column;
+}
+
+.flex_text.horizontal{
+  align-items: center;
+}
+.max-w-1440{
+  max-width: 1440px
+}
