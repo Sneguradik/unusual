@@ -41,9 +41,24 @@ namespace WebApi.Controllers
                 }
             }
 
+            var filterReq = new FilterMessage()
+            {
+                Currency = dto.Currency,
+                ExcludedCodes = dto.ExcludedCodes,
+                Filters = dto.Filters.Select(x=> new Filter()
+                {
+                    Description = x.Description,
+                    Active = x.Active,
+                    UseTrigger = x.UseTrigger,
+                    Condition = x.Condition,
+                    Type = x.Type,
+                    Value = x.Value,
+                }).ToList(),
+            };
+
             var tradeStats = await filterService.ApplyFilters(
-                tradeRepository.GetTradeResults(dto, dto.StartDate, dto.EndDate),
-                dto.Filters,
+                tradeRepository.GetTradeResults(filterReq,dto.StartDate, dto.EndDate),
+                filterReq.Filters,
                 token: token);
 
             logger.LogInformation($"Filtered from {dto.StartDate:yyyy-MM-dd} to {dto.EndDate:yyyy-MM-dd}. Currency: {dto.Currency}.");
