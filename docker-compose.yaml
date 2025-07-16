@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   traefik:
     image: traefik:v2.10
@@ -43,7 +45,8 @@ services:
 
   webapi:
     build:
-      context: ./backend/WebApi
+      context: .
+      dockerfile: WebApi/Dockerfile
     container_name: unusual_webapi
     restart: always
     environment:
@@ -68,7 +71,8 @@ services:
 
   poller:
     build:
-      context: ./backend/Poller
+      context: .
+      dockerfile: Poller/Dockerfile
     container_name: unusual_poller
     restart: always
     depends_on:
@@ -83,7 +87,7 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./unusual_front_v2
     container_name: unusual_frontend
     restart: always
     depends_on:

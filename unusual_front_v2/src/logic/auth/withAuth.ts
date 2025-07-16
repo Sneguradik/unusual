@@ -1,13 +1,12 @@
-
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { decodeJwt } from "@/logic/auth/decodeJwt";
-import { IJwtPayload} from "@logic/Entities";
+import { jwtDecode } from "jwt-decode";
+import { IJwtPayload } from "@logic/Entities";
 
 type WithAuthOptions = {
   roles?: string[];
 };
 
-export function withAuth<P extends { [key: string]: any; }>(
+export function withAuth<P extends { [key: string]: any }>(
   gssp: GetServerSideProps<P>,
   options: WithAuthOptions = {}
 ): GetServerSideProps<P> {
@@ -25,9 +24,9 @@ export function withAuth<P extends { [key: string]: any; }>(
       };
     }
 
-    let payload: IJwtPayload | undefined;
+    let payload: IJwtPayload;
     try {
-      payload = decodeJwt(token).payload;
+      payload = jwtDecode<IJwtPayload>(token);
     } catch (err) {
       console.error("Invalid token:", err);
       return {
@@ -40,13 +39,6 @@ export function withAuth<P extends { [key: string]: any; }>(
 
     const userRole = payload?.role;
     const allowedRoles = options.roles;
-
-    if (!allowedRoles || !userRole) return {
-      redirect: {
-        destination: "/403",
-        permanent: false,
-      },
-    };
 
     if (allowedRoles && !allowedRoles.includes(userRole)) {
       return {

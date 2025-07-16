@@ -13,5 +13,5 @@ public interface IPresetRepo
     Task<bool> DeletePresetAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default);
     Task<IEnumerable<Preset>> GetPresetsByUserAsync(User user, bool publicOnly = false, CancellationToken cancellationToken = default);
     Task<IEnumerable<Preset>> GetPresetsByQueryAsync(string query, bool publicOnly = false, CancellationToken cancellationToken = default);
-    Task<Preset?> GetDefaultPresetAsync(Currency currency, CancellationToken cancellationToken = default);
+    Task<DefaultPreset?> GetDefaultPresetAsync(Currency currency, CancellationToken cancellationToken = default);
 }

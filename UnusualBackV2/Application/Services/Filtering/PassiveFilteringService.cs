@@ -44,7 +44,7 @@ public class PassiveFilteringService(IFilterApplyingService filterService, IHist
         CancellationToken cancellationToken = default)
     {
         var defaultPreset = await presetRepo.GetDefaultPresetAsync(currency, cancellationToken);
-        if (defaultPreset is null)
+        if (defaultPreset?.Preset is null || defaultPreset.Currency is null)
         {
             logger.LogInformation("No default preset for currency {Currency}", currency.Symbol);
             return [];
@@ -56,17 +56,16 @@ public class PassiveFilteringService(IFilterApplyingService filterService, IHist
         
         if (lastDeal is null) syncPoint = DateTime.UtcNow - TimeSpan.FromDays(1);
         else syncPoint = lastDeal.TradeDate ;
-        var startDate = DateTime.UtcNow;
         var filterMessage = new FilterMessage
         {
             Currency = defaultPreset.Currency,
-            ExcludedCodes = defaultPreset.ExcludedCodes,
-            Filters = defaultPreset.Filters,
+            ExcludedCodes = defaultPreset.Preset.ExcludedCodes,
+            Filters = defaultPreset.Preset.Filters,
         };
         
         return await filterService.ApplyFilters(
             tradeRepository.GetTradeResults(filterMessage,syncPoint, DateTime.UtcNow),
-            defaultPreset.Filters,
+            defaultPreset.Preset.Filters,
             token: cancellationToken);
     }
 }

@@ -48,7 +48,24 @@ public class PresetRepo(MainDbContext context) : IPresetRepo
 
     public async Task UpdatePresetAsync(Preset updated, CancellationToken cancellationToken = default)
     {
-        
+        if (updated.IsDefault)
+        {
+            var oldDefault = await GetDefaultPresetAsync(updated.Currency,  cancellationToken);
+            if (oldDefault?.Preset != null)
+            {
+                oldDefault.Preset.IsDefault = false;
+                oldDefault.Preset = updated;
+            }
+            else await context.DefaultPresets
+                .AddAsync(new DefaultPreset{Currency = updated.Currency, Preset = updated}, cancellationToken);
+            
+        }
+        else
+        {
+            var oldDefault = await GetDefaultPresetAsync(updated.Currency,  cancellationToken);
+            if (oldDefault?.Preset != null) oldDefault.Preset = null;
+            
+        }
         await context.SaveChangesAsync(cancellationToken);
     }
 
@@ -72,13 +89,13 @@ public class PresetRepo(MainDbContext context) : IPresetRepo
             .Where(x=>x.Name.ToLower().Contains(query.ToLower()))
             .ToArrayAsync(cancellationToken);
 
-    public async Task<Preset?> GetDefaultPresetAsync(Currency currency, CancellationToken cancellationToken = default)
+    public async Task<DefaultPreset?> GetDefaultPresetAsync(Currency currency, CancellationToken cancellationToken = default)
     {
         var pair = await context
             .DefaultPresets
             .Include(x => x.Currency)
             .Include(defaultPreset => defaultPreset.Preset)
             .FirstOrDefaultAsync(x => x.Currency == currency, cancellationToken);
-        return pair?.Preset;
+        return pair;
     }
 }
