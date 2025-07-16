@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     serverBackendUrl: "http://webapi:8080",
   },
   publicRuntimeConfig:{
-    backendUrl: "http://0.0.0.0:6060",
+    backendUrl: "http://unusual.office.np:6060",
   }
 };
 

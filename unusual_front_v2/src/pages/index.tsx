@@ -80,7 +80,7 @@ export default function Home({currencies, descriptions, presets, recentDeals}: I
     const request: ITradeStatsRequest = {
       startDate: dateRange.from.toISOString(),
       endDate: dateRange.to.toISOString(),
-      currency: filterState.currency.symbol,
+      currency: filterState.currency,
       excludedCodes: filterState.excludedCodes,
       filters: filterState.filters,
       presetId: selectedPresetId

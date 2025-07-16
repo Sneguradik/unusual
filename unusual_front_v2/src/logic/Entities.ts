@@ -80,7 +80,7 @@ export interface ITradeStatAnalyzed {
 export interface ITradeStatsRequest {
   startDate: string
   endDate: string
-  currency: string
+  currency: ICurrency,
   excludedCodes: string,
   presetId: number | null,
   filters: IFilter[],

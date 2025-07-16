@@ -4,7 +4,7 @@ import {Input} from "@components/ui/input";
 import {cn} from "@/lib/utils";
 import {MdAlternateEmail, MdKey} from "react-icons/md";
 import {Button} from "@components/ui/button";
-import {Checkbox} from "@components/ui/checkbox";
+
 import {FormEvent, useState} from "react";
 import {toast} from "react-toastify";
 import {IErrorMessage, IAuthenticatedUser} from "@logic/Entities";
@@ -23,7 +23,7 @@ export default function LoginPage(){
 
     const req = await fetch("/api/login", {
       method: "POST",
-      body: JSON.stringify({email: formData.get("email"), password: formData.get("password"), remember: formData.get("remember")}),
+      body: JSON.stringify({email: formData.get("email"), password: formData.get("password"), remember: true}),
     });
 
     if (!req.ok){
@@ -55,10 +55,7 @@ export default function LoginPage(){
           <Input type="password" placeholder={"password"} name={"password"} disabled={isLoading}/>
         </div>
 
-        <div className={"flex_text horizontal mt-4 mb-2"}>
-          <Checkbox name={"remember"} disabled={isLoading}/>
-          <text>Remember me</text>
-        </div>
+
 
         <Button type={"submit"} disabled={isLoading}>Login</Button>
 
