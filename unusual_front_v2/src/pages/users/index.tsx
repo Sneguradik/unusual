@@ -73,6 +73,9 @@ export const getServerSideProps =withAuth( (async (context) => {
     credentials: "include",
   });
 
+  if (!res.ok) {
+    console.log(await res.text());
+  }
 
 
   const data = await res.json() as IUser[];

@@ -23,7 +23,7 @@ export default function LoginPage(){
 
     const req = await fetch("/api/login", {
       method: "POST",
-      body: JSON.stringify({email: formData.get("email"), password: formData.get("password"), remember: true}),
+      body: JSON.stringify({email: formData.get("email"), password: formData.get("password"), remember: "on"}),
     });
 
     if (!req.ok){
