@@ -62,7 +62,7 @@ function CurrencyTableItem({currency}: {currency: ICurrency}) {
 
 export const getServerSideProps = withAuth((async () => {
   const conf = getConfig();
-  const res = await fetch(conf.publicRuntimeConfig.backendUrl+"/currency/all", {
+  const res = await fetch(conf.serverRuntimeConfig.serverBackendUrl+"/currency/all", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

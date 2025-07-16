@@ -87,7 +87,7 @@ export const getServerSideProps =withAuth( (async (context) => {
   if (!user) throw new Error("Invalid token payload");
 
   const url = user.role=="Admin"?"/preset/all":"/preset/my";
-  const res = await fetch(conf.publicRuntimeConfig.backendUrl + url, {
+  const res = await fetch(conf.serverRuntimeConfig.serverBackendUrl + url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -15,13 +15,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json(err_msg);
   }
 
-  const {serverRuntimeConfig ,publicRuntimeConfig} = getConfig();
+  const conf = getConfig();
 
 
   const data = JSON.parse(req.body) as IClientLoginCredentials;
 
 
-  const backReq = await fetch(publicRuntimeConfig.backendUrl+"/auth/login", {
+  const backReq = await fetch(conf.serverRuntimeConfig.serverBackendUrl+"/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -43,13 +43,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         httpOnly: true,
         path: "/",
         sameSite: "strict",
-        maxAge: serverRuntimeConfig.tokenValidityInSeconds,
+        maxAge: conf.serverRuntimeConfig.tokenValidityInSeconds,
       }),
       serialize("refreshToken", user.tokenPair.refreshToken, {
         httpOnly: true,
         path: "/",
         sameSite: "strict",
-        maxAge: 60 * 60 * 24 * serverRuntimeConfig.refreshTokenValidityInDays,
+        maxAge: 60 * 60 * 24 * conf.serverRuntimeConfig.refreshTokenValidityInDays,
       }),
     ]);
   }

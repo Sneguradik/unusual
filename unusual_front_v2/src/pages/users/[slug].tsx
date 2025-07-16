@@ -235,7 +235,7 @@ export const getServerSideProps = withAuth((async (context) => {
   let data: IUser | null = null;
 
   if (slug !== "new") {
-    const res = await fetch(conf.publicRuntimeConfig.backendUrl + `/users/${slug}`, {
+    const res = await fetch(conf.serverRuntimeConfig.serverBackendUrl + `/users/${slug}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

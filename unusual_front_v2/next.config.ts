@@ -6,9 +6,10 @@ const nextConfig: NextConfig = {
   serverRuntimeConfig:{
     tokenValidityInSeconds: 600,
     refreshTokenValidityInDays: 7,
+    serverBackendUrl: "http://webapi:8080",
   },
   publicRuntimeConfig:{
-    backendUrl: "/mapi",
+    backendUrl: "http://0.0.0.0:6060",
   }
 };
 

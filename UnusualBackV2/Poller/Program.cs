@@ -4,7 +4,12 @@ using Poller;
 using Quartz;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddQuartzHostedService().AddInfrastructureServices().AddServices();
+builder.Services
+    .AddQuartzHostedService()
+    .AddInfrastructureServices()
+    .AddServices()
+    .AddDataBases(builder.Configuration.GetConnectionString("SPBE"),
+    builder.Configuration.GetConnectionString("MainDb"));
 
 builder.Services.AddQuartz(q =>
 {

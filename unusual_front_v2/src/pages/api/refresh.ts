@@ -14,11 +14,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     return res.status(405).json(err_msg);
   }
-  const {serverRuntimeConfig ,publicRuntimeConfig} = getConfig();
+  const conf = getConfig();
 
   const data = req.body ;
 
-  const backReq = await fetch(publicRuntimeConfig.backendUrl+"/auth/refresh", {
+  const backReq = await fetch(conf.serverRuntimeConfig.serverBackendUrl+"/auth/refresh", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -40,13 +40,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         httpOnly: true,
         path: "/",
         sameSite: "strict",
-        maxAge: serverRuntimeConfig.tokenValidityInSeconds,
+        maxAge: conf.serverRuntimeConfig.tokenValidityInSeconds,
       }),
       serialize("refreshToken", tokenPair.refreshToken, {
         httpOnly: true,
         path: "/",
         sameSite: "strict",
-        maxAge: 60 * 60 * 24 * serverRuntimeConfig.refreshTokenValidityInDays,
+        maxAge: 60 * 60 * 24 * conf.serverRuntimeConfig.refreshTokenValidityInDays,
       }),
     ]);
   }

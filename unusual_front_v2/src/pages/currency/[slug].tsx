@@ -128,7 +128,7 @@ export const getServerSideProps = withAuth((async (context) => {
   let data : ICurrency|null;
 
   if(context.query.slug != "new"){
-    const res = await fetch(conf.publicRuntimeConfig.backendUrl+`/currency/${context.query.slug}`, {
+    const res = await fetch(conf.serverRuntimeConfig.serverBackendUrl+`/currency/${context.query.slug}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

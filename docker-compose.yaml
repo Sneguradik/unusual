@@ -1,28 +1,6 @@
 version: "3.9"
 
 services:
-  traefik:
-    image: traefik:v2.10
-    container_name: unusual_traefik
-    restart: always
-    command:
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.letsencrypt.acme.email=admin@unusual.office.np"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./.volumes/letsencrypt:/letsencrypt"
-    networks:
-      - web
-
   postgres:
     image: postgres:latest
     container_name: unusual_postgres
@@ -31,79 +9,69 @@ services:
       POSTGRES_USER: backend
       POSTGRES_PASSWORD: supersecret
       POSTGRES_DB: maindb
+    ports:
+      - "5436:5432"
     volumes:
-      - "./.volumes/postgres:/var/lib/postgresql/data"
+      - ./volumes/postgres:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U backend"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - db
-    ports:
-      - "5436:5432"
+      - backend
 
   webapi:
     build:
-      context: .
-      dockerfile: WebApi/Dockerfile
+      context: ./UnusualBackV2
+      dockerfile: ./WebApi/Dockerfile
     container_name: unusual_webapi
     restart: always
+    ports:
+      - "6060:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./volumes/logs:/app/logs
     depends_on:
       postgres:
         condition: service_healthy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`unusual.office.np`) && PathPrefix(`/mapi`)"
-      - "traefik.http.routers.api.entrypoints=websecure"
-      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.api.middlewares=mapi-strip"
-      - "traefik.http.middlewares.mapi-strip.stripprefix.prefixes=/mapi"
-      - "traefik.http.services.api.loadbalancer.server.port=80"
-    volumes:
-      - "./.volumes/logs:/app/logs"
     networks:
-      - web
-      - db
+      - backend
 
   poller:
     build:
-      context: .
-      dockerfile: Poller/Dockerfile
+      context: ./UnusualBackV2
+      dockerfile: ./Poller/Dockerfile
     container_name: unusual_poller
     restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       webapi:
         condition: service_started
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
     volumes:
-      - "./.volumes/logs:/app/logs"
+      - ./volumes/logs:/app/logs
     networks:
-      - db
+      - backend
 
   frontend:
     build:
       context: ./unusual_front_v2
     container_name: unusual_frontend
     restart: always
+    ports:
+      - "3000:3000"
+
+    environment:
+      - NODE_ENV=production
     depends_on:
       webapi:
         condition: service_started
-    environment:
-      - NODE_ENV=production
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`unusual.office.np`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
     networks:
-      - web
+      - backend
 
 networks:
-  web:
-  db:
+  backend:
+    driver: bridge
+

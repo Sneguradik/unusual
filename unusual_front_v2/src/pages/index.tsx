@@ -227,7 +227,7 @@ export const getServerSideProps = (async (context) => {
       const { payload } = decodeJwt(token);
 
       if (payload?.role === "Admin") {
-        const presetRes = await fetch(`${conf.publicRuntimeConfig.backendUrl}/preset/all`, {
+        const presetRes = await fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/preset/all`, {
           headers: { Authorization: `Bearer ${token}` },
           credentials: "include"
         });
@@ -235,11 +235,11 @@ export const getServerSideProps = (async (context) => {
         console.log(presetRes.statusText);
       } else {
         const [publicRes, myRes] = await Promise.all([
-          fetch(`${conf.publicRuntimeConfig.backendUrl}/preset/public`, {
+          fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/preset/public`, {
             headers: { Authorization: `Bearer ${token}` },
             credentials: "include"
           }),
-          fetch(`${conf.publicRuntimeConfig.backendUrl}/preset/my`, {
+          fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/preset/my`, {
             headers: { Authorization: `Bearer ${token}` },
             credentials: "include"
           }),
@@ -254,7 +254,7 @@ export const getServerSideProps = (async (context) => {
         presets = Array.from(mergedMap.values());
       }
     } else {
-      const presetRes = await fetch(`${conf.publicRuntimeConfig.backendUrl}/preset/public`);
+      const presetRes = await fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/preset/public`);
       presets = await presetRes.json() as IPreset[];
     }
   }
@@ -262,13 +262,13 @@ export const getServerSideProps = (async (context) => {
     console.error(error);
   }
 
-  const recentRes = await fetch(`${conf.publicRuntimeConfig.backendUrl}/filter/stats_by_currency`);
+  const recentRes = await fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/filter/stats_by_currency`);
   const recentDeals = await recentRes.json() as DealsStatsByCurrencyDto[];
 
-  const currRes = await fetch(`${conf.publicRuntimeConfig.backendUrl}/currency/all`);
+  const currRes = await fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/currency/all`);
   const currencies = await currRes.json() as ICurrency[];
 
-  const descRes = await fetch(`${conf.publicRuntimeConfig.backendUrl}/descriptions`);
+  const descRes = await fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/descriptions`);
   const descriptions = await descRes.json() as IFilterDescription[];
 
   return {

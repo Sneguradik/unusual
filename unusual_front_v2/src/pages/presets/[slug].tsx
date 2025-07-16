@@ -191,7 +191,7 @@ export const getServerSideProps = withAuth((async (context) => {
   let data: IPreset | null = null;
 
   if (context.query.slug !== "new") {
-    const res = await fetch(`${conf.publicRuntimeConfig.backendUrl}/preset/${context.query.slug}`, {
+    const res = await fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/preset/${context.query.slug}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -204,10 +204,10 @@ export const getServerSideProps = withAuth((async (context) => {
     }
   }
 
-  const currRes = await fetch(`${conf.publicRuntimeConfig.backendUrl}/currency/all`);
+  const currRes = await fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/currency/all`);
   const currencies = await currRes.json() as ICurrency[];
 
-  const descRes = await fetch(`${conf.publicRuntimeConfig.backendUrl}/descriptions`);
+  const descRes = await fetch(`${conf.serverRuntimeConfig.serverBackendUrl}/descriptions`);
   const descriptions = await descRes.json() as IFilterDescription[];
 
   return {
